@@ -31,12 +31,10 @@ function App() {
      return response
   }
 
-  const sortPokemons = pokemons => {
-     return pokemons.sort((a, b) => {
+  const sortByAsc = (a, b) => {
       if (a.name > b.name) return 1
       if (a.name < b.name) return -1
       return 0
-    })
   }
 
   const fetchPokemonData = async url => {
@@ -53,7 +51,7 @@ function App() {
 
       await Promise
         .all(response.results.map(async ({ url }) => await fetchPokemonData(url)))
-        .then(data => setPokemons(sortPokemons([...pokemons, ...data])))
+        .then(data => setPokemons([...pokemons, ...data].sort(sortByAsc)))
     })
   }
 
