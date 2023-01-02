@@ -47,13 +47,13 @@ function App() {
 
   const handleFetchPokemons = () => {
     fetchPokemons().then(async response => {
-      setCount(response.count)
       setNextPage(response.next)
+
+      if (!count) setCount(response.count)
 
       await Promise
         .all(response.results.map(async ({ url }) => await fetchPokemonData(url)))
-        .then(sortPokemons)
-        .then(data => setPokemons([...pokemons, ...data]))
+        .then(data => setPokemons(sortPokemons([...pokemons, ...data])))
     })
   }
 
