@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Pokemon } from './Pokemon';
 
 /*
 Consuma a API e liste todos os pokemons da consulta do seguinte endpoint. 
@@ -37,21 +38,12 @@ function App() {
       return 0
   }
 
-  const fetchPokemonData = async url => {
-    const response = await fetch(url).then(data => data.json())
-
-    return response
-  }
-
   const handleFetchPokemons = () => {
     fetchPokemons().then(async response => {
-      setNextPage(response.next)
-
       if (!count) setCount(response.count)
 
-      await Promise
-        .all(response.results.map(async ({ url }) => await fetchPokemonData(url)))
-        .then(data => setPokemons([...pokemons, ...data].sort(sortByAsc)))
+      setNextPage(response.next)
+      setPokemons([...pokemons, ...response.results].sort(sortByAsc))
     })
   }
 
@@ -63,13 +55,7 @@ function App() {
     <>
       <h3>desafio fernandev</h3>
       <h1>consumir api pokémon</h1>
-      {pokemons.map(pokemon => (
-        <div key={pokemon.id} style={{ display: 'flex', alignItems: 'center'}}>
-          <img src={pokemon.sprites.front_default}/>
-          <h3 style={{ marginRight: '5px' }}>{pokemon.name}</h3>
-           - EXP: {pokemon.base_experience}
-        </div>
-      ))}
+      {pokemons.map((pokemon) => <Pokemon key={pokemon.url} data={pokemon}/>)}
     </>
   );
 }
