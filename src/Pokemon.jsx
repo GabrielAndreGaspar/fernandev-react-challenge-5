@@ -17,7 +17,7 @@ export const Pokemon = ({ data }) => {
 
     return (
         <div style={{ display: 'flex', alignItems: 'center'}}>
-            <img src={pokemon.sprites.front_default}/>
+            <img style={{ marginRight: 10 }} src={pokemon.sprites.front_default}/>
             <h3 style={{ marginRight: '5px' }}>{pokemon.name}</h3>
             - EXP: {pokemon.base_experience}
         </div>
