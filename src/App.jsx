@@ -38,17 +38,23 @@ function App() {
       return 0
   }
 
-  const handleFetchPokemons = () => {
+  const handleFetchPokemons = (cleanUp) => {
     fetchPokemons().then(async response => {
-      if (!count) setCount(response.count)
+      if (cleanUp.abort) return
 
+      if (!count) setCount(response.count)
+       
       setNextPage(response.next)
       setPokemons([...pokemons, ...response.results].sort(sortByAsc))
     })
   }
 
   useEffect(() => {
-    if (!count || pokemons.length < count) handleFetchPokemons()
+    const cleanUp = { abort: false }
+
+    if (!count || pokemons.length < count) handleFetchPokemons(cleanUp)
+
+    return () => (cleanUp.abort = true)
   }, [pokemons])
 
   return (
